@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       appBar: buildCustomAppBar("Home page", textColor: Colors.white),
-      body: GradientBackground( // ✅ هنا الخلفية
+      body: GradientBackground( 
         child: Padding(
           padding: EdgeInsets.only(top: 10.sp),
           child: Column(

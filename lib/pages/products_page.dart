@@ -130,7 +130,7 @@ class _ProductsPageState extends State<ProductsPage> {
     );
 
     bool success = await CartManager.addToCart(product);
-    
+
     // إخفاء loading
     Navigator.pop(context);
 
@@ -187,7 +187,6 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
         backgroundColor: brownDark,
         title: Text(
@@ -244,107 +243,109 @@ class _ProductsPageState extends State<ProductsPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Search Bar Container
-          Container(
-            padding: EdgeInsets.all(16.sp),
-            decoration: BoxDecoration(
-              color: brownDark,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25.r),
-                bottomRight: Radius.circular(25.r),
+      body: GradientBackground(   
+        child: Column(
+          children: [
+            // Search Bar Container
+            Container(
+              padding: EdgeInsets.all(16.sp),
+              decoration: BoxDecoration(
+                color: brownDark,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25.r),
+                  bottomRight: Radius.circular(25.r),
+                ),
+              ),
+              child: Column(
+                children: [
+                  // Search Bar
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Search for products...',
+                        hintStyle: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontSize: 16.sp,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: brownDark,
+                          size: 24.sp,
+                        ),
+                        suffixIcon: _searchQuery.isNotEmpty
+                            ? IconButton(
+                                onPressed: _clearSearch,
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.grey.shade600,
+                                  size: 20.sp,
+                                ),
+                              )
+                            : null,
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 16.h,
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: brownDark,
+                      ),
+                    ),
+                  ),
+
+                  // Search Results Counter
+                  if (_searchQuery.isNotEmpty) ...[
+                    SizedBox(height: 12.h),
+                    Row(
+                      children: [
+                        Text(
+                          'Found ${_filteredProducts.length} products',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        const Spacer(),
+                        if (_filteredProducts.isEmpty)
+                          Icon(
+                            Icons.search_off,
+                            color: Colors.white70,
+                            size: 16.sp,
+                          ),
+                      ],
+                    ),
+                  ],
+                ],
               ),
             ),
-            child: Column(
-              children: [
-                // Search Bar
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'Search for products...',
-                      hintStyle: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontSize: 16.sp,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: brownDark,
-                        size: 24.sp,
-                      ),
-                      suffixIcon: _searchQuery.isNotEmpty
-                          ? IconButton(
-                              onPressed: _clearSearch,
-                              icon: Icon(
-                                Icons.clear,
-                                color: Colors.grey.shade600,
-                                size: 20.sp,
-                              ),
-                            )
-                          : null,
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20.w,
-                        vertical: 16.h,
-                      ),
-                    ),
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: brownDark,
-                    ),
-                  ),
-                ),
-                
-                // Search Results Counter
-                if (_searchQuery.isNotEmpty) ...[
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      Text(
-                        'Found ${_filteredProducts.length} products',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14.sp,
-                        ),
-                      ),
-                      const Spacer(),
-                      if (_filteredProducts.isEmpty)
-                        Icon(
-                          Icons.search_off,
-                          color: Colors.white70,
-                          size: 16.sp,
-                        ),
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          ),
 
-          // Products Grid
-          Expanded(
-            child: _filteredProducts.isEmpty && _searchQuery.isNotEmpty
-                ? _buildNoResultsWidget()
-                : _buildProductsGrid(),
-          ),
-        ],
+            // Products Grid
+            Expanded(
+              child: _filteredProducts.isEmpty && _searchQuery.isNotEmpty
+                  ? _buildNoResultsWidget()
+                  : _buildProductsGrid(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -423,8 +424,9 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget _buildProductCard(Map<String, dynamic> product) {
     final isFavorite = _favorites.contains(product['id'].toString());
     final isInCart = CartManager.isInCart(product['id'].toString());
-    final quantityInCart = CartManager.getProductQuantity(product['id'].toString());
-    
+    final quantityInCart =
+        CartManager.getProductQuantity(product['id'].toString());
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -542,7 +544,7 @@ class _ProductsPageState extends State<ProductsPage> {
               ],
             ),
           ),
-          
+
           // معلومات المنتج
           Expanded(
             flex: 2,
@@ -563,13 +565,13 @@ class _ProductsPageState extends State<ProductsPage> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 3.h),
-                  
+
                   // السعر والتقييم
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$${product['price'].toStringAsFixed(0)}', 
+                        '\$${product['price'].toStringAsFixed(0)}',
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -593,7 +595,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     ],
                   ),
                   SizedBox(height: 6.h),
-                  
+
                   // زر الشراء
                   SizedBox(
                     width: double.infinity,
@@ -601,8 +603,8 @@ class _ProductsPageState extends State<ProductsPage> {
                     child: ElevatedButton(
                       onPressed: () => _addToCart(product),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: isInCart 
-                            ? Colors.green 
+                        backgroundColor: isInCart
+                            ? Colors.green
                             : const Color(0xFFD7A86E),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(6.r),

@@ -96,8 +96,6 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailure("An unexpected error occurred during signup. Please try again."));
     }
   }
-
-  // دالة للتحقق من حالة تسجيل الدخول
   Future<bool> checkAuthStatus() async {
     try {
       User? user = _auth.currentUser;
@@ -106,8 +104,6 @@ class AuthCubit extends Cubit<AuthState> {
       return false;
     }
   }
-
-  // دالة لتسجيل الخروج
   Future<void> signOut() async {
     try {
       await _auth.signOut();

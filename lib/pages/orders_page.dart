@@ -448,8 +448,9 @@ class OrdersPageState extends State<OrdersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade50,
+    return GradientBackground (
+    child : Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: brownDark,
         title: Text(
@@ -477,6 +478,7 @@ class OrdersPageState extends State<OrdersPage> {
           : orders.isEmpty 
               ? _buildEmptyOrders() 
               : _buildOrdersList(),
+    ),
     );
   }
 

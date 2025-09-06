@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'components.dart'; // ✅ تأكد إنك عامل import للـ GradientBackground
 
 class CartManager {
   static final CartManager _instance = CartManager._internal();
@@ -69,7 +70,6 @@ class CartManager {
     }
   }
 
-  // حفظ السلة في Firebase
   static Future<void> _saveCartToFirebase() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -91,7 +91,6 @@ class CartManager {
     }
   }
 
-  // إضافة منتج للسلة
   static Future<bool> addToCart(Map<String, dynamic> product) async {
     try {
       int existingIndex = _cartItems.indexWhere(
@@ -99,10 +98,10 @@ class CartManager {
       );
       
       if (existingIndex != -1) {
-        // زيادة الكمية إذا كان المنتج موجود
+
         _cartItems[existingIndex]['quantity'] += 1;
       } else {
-        // إضافة منتج جديد
+
         _cartItems.add({
           'id': product['id'],
           'productName': product['name'],
@@ -112,10 +111,10 @@ class CartManager {
         });
       }
 
-      // حفظ في Firebase
+
       await _saveCartToFirebase();
       
-      // تحديث الواجهات
+
       cartNotifier.value = List.from(_cartItems);
       
       print('Added to cart: ${product['name']}');
@@ -126,15 +125,15 @@ class CartManager {
     }
   }
 
-  // إزالة منتج من السلة
+
   static Future<bool> removeFromCart(String productId) async {
     try {
       _cartItems.removeWhere((item) => item['id'] == productId);
       
-      // حفظ في Firebase
+
       await _saveCartToFirebase();
       
-      // تحديث الواجهات
+
       cartNotifier.value = List.from(_cartItems);
       
       return true;
@@ -144,7 +143,6 @@ class CartManager {
     }
   }
 
-  // تحديث كمية المنتج
   static Future<bool> updateQuantity(String productId, int newQuantity) async {
     try {
       if (newQuantity <= 0) {
@@ -155,10 +153,10 @@ class CartManager {
       if (index != -1) {
         _cartItems[index]['quantity'] = newQuantity;
         
-        // حفظ في Firebase
+
         await _saveCartToFirebase();
         
-        // تحديث الواجهات
+
         cartNotifier.value = List.from(_cartItems);
         
         return true;
@@ -170,15 +168,14 @@ class CartManager {
     }
   }
 
-  // مسح السلة بالكامل
+
   static Future<bool> clearCart() async {
     try {
       _cartItems.clear();
       
-      // حفظ في Firebase
+
       await _saveCartToFirebase();
-      
-      // تحديث الواجهات
+ 
       cartNotifier.value = List.from(_cartItems);
       
       return true;
@@ -188,12 +185,12 @@ class CartManager {
     }
   }
 
-  // التحقق من وجود منتج في السلة
+
   static bool isInCart(String productId) {
     return _cartItems.any((item) => item['id'] == productId);
   }
 
-  // الحصول على كمية منتج معين
+
   static int getProductQuantity(String productId) {
     var item = _cartItems.firstWhere(
       (item) => item['id'] == productId,
@@ -202,7 +199,6 @@ class CartManager {
     return item['quantity'] ?? 0;
   }
 
-  // إنشاء طلب جديد (للربط مع صفحة الطلبات)
   static Future<bool> createOrder() async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -220,13 +216,13 @@ class CartManager {
         'estimatedDelivery': DateTime.now().add(const Duration(minutes: 30)),
       };
 
-      // حفظ الطلب في Firebase
+   
       await FirebaseFirestore.instance
           .collection('orders')
           .doc(orderId)
           .set(orderData);
 
-      // مسح السلة بعد إنشاء الطلب
+
       await clearCart();
 
       print('Order created successfully: $orderId');
@@ -237,15 +233,55 @@ class CartManager {
     }
   }
 
-  // الاستماع لتغييرات السلة (للواجهات التي تحتاج تحديث مباشر)
   static Stream<List<Map<String, dynamic>>> get cartStream {
     return Stream<List<Map<String, dynamic>>>.fromFuture(
       Future.value(cartNotifier.value)
     );
   }
 
-  // تهيئة السلة عند بدء التطبيق
+ 
   static Future<void> initialize() async {
     await loadCartFromFirebase();
+  }
+}
+
+
+class CartPage extends StatelessWidget {
+  const CartPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GradientBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: const Text("Cart"),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: ValueListenableBuilder<List<Map<String, dynamic>>>(
+          valueListenable: CartManager.cartNotifier,
+          builder: (context, cartItems, _) {
+            if (cartItems.isEmpty) {
+              return const Center(child: Text("Cart is empty", style: TextStyle(color: Colors.white)));
+            }
+            return ListView.builder(
+              itemCount: cartItems.length,
+              itemBuilder: (context, index) {
+                final item = cartItems[index];
+                return ListTile(
+                  title: Text(item['productName'], style: const TextStyle(color: Colors.white)),
+                  subtitle: Text("x${item['quantity']} - \$${item['price']}", style: const TextStyle(color: Colors.white70)),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => CartManager.removeFromCart(item['id']),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
   }
 }

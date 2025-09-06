@@ -185,11 +185,9 @@ class _CartPageState extends State<CartPage> {
               onPressed: () async {
                 Navigator.pop(context);
 
-                // إنشاء الطلب
                 bool success = await CartManager.createOrder();
 
                 if (success) {
-                  // مجرد print للتأكد، مش هنظهر SnackBar
                   print('Order created successfully');
                 } else {
                   print('Failed to place order');
@@ -221,11 +219,13 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Scaffold(
-        backgroundColor: brownDark,
+      return GradientBackground (
+      child:  Scaffold(
+        backgroundColor: Colors.transparent,
         body: Center(
           child: CircularProgressIndicator(color: Color(0xFFD7A86E)),
         ),
+      ),
       );
     }
 

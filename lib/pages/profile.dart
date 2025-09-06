@@ -46,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (currentUser != null) {
       try {
-        // محاولة قراءة البيانات من Firestore
+
         DocumentSnapshot userDoc = await _firestore
             .collection('users')
             .doc(currentUser!.uid)
@@ -59,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
           print("User data loaded: $userData");
         } else {
           print("No user document found, creating default data");
-          // إذا لم توجد البيانات، ننشئ مستند جديد بالبيانات الافتراضية
+
           userData = {
             'uid': currentUser!.uid,
             'firstName': '',
@@ -68,13 +68,12 @@ class _ProfilePageState extends State<ProfilePage> {
             'phone': '',
             'profileImage': null,
           };
-          
-          // حفظ البيانات الافتراضية في Firestore
+
           await _firestore.collection('users').doc(currentUser!.uid).set(userData!);
         }
       } catch (e) {
         print('Error loading user data: $e');
-        // في حالة حدوث خطأ، ننشئ بيانات افتراضية
+
         userData = {
           'uid': currentUser!.uid,
           'firstName': '',
@@ -86,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     } else {
       print("No current user found");
-      // إذا لم يكن هناك مستخدم مسجل دخول، الانتقال لصفحة تسجيل الدخول
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -206,7 +205,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (_selectedImage == null || currentUser == null) return;
 
     try {
-      // إظهار loading
+
       if (mounted) {
         showDialog(
           context: context,
@@ -216,27 +215,25 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
       }
-
-      // رفع الصورة لـ Firebase Storage
       String fileName = 'profile_${currentUser!.uid}_${DateTime.now().millisecondsSinceEpoch}.jpg';
       Reference ref = _storage.ref().child('profile_images/$fileName');
       
       await ref.putFile(_selectedImage!);
       String downloadUrl = await ref.getDownloadURL();
 
-      // تحديث الرابط في Firestore
+
       await _firestore.collection('users').doc(currentUser!.uid).update({
         'profileImage': downloadUrl,
         'updatedAt': FieldValue.serverTimestamp(),
       });
 
-      // تحديث البيانات المحلية
+
       setState(() {
         userData!['profileImage'] = downloadUrl;
       });
 
       if (mounted) {
-        Navigator.pop(context); // إخفاء loading
+        Navigator.pop(context); 
         
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -249,7 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
     } catch (e) {
       print('Image upload error: $e');
       if (mounted) {
-        Navigator.pop(context); // إخفاء loading
+        Navigator.pop(context); 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Failed to upload image: ${e.toString()}"),
@@ -381,13 +378,13 @@ class _ProfilePageState extends State<ProfilePage> {
     try {
       print("Updating $field with value: $value");
       
-      // تحديث البيانات في Firestore
+     
       await _firestore.collection('users').doc(currentUser!.uid).update({
         field: value,
         'updatedAt': FieldValue.serverTimestamp(),
       });
 
-      // تحديث البيانات المحلية
+      
       setState(() {
         userData![field] = value;
       });
@@ -573,7 +570,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
 
-            // Profile Information Section
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -600,7 +596,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     icon: Icons.email_rounded,
                     title: "Email",
                     value: userData?['email'] ?? 'No email',
-                    onEdit: null, // Email لا يمكن تعديله
+                    onEdit: null, 
                   ),
                   const SizedBox(height: 15),
                   _buildInfoCard(
@@ -613,7 +609,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 30),
 
-                  // Refresh button
+           
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
