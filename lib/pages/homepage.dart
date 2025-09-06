@@ -23,9 +23,6 @@ class _HomePageState extends State<HomePage> {
     "assets/images/item3.jpg",
   ];
 
-  static const Color brownDark = Color(0xFF2B1B17);
-  static const Color brownLight = Color(0xFFD7A86E);
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -35,11 +32,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: brownDark,
       body: _buildContentForIndex(_selectedIndex),
-      // bottom اللي تحت
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: brownDark,
+        backgroundColor: Color(0xFFD7A86E),
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,
@@ -73,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         return const CartPage();
       case 3:
         return const OrdersPage();
-        case 4: 
+      case 4:
         return const ProfilePage();
       default:
         return _buildHome();
@@ -87,113 +82,114 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           padding: EdgeInsets.all(10.sp),
           children: [
-            DrawerHeader(child: Text("data")),
+            const DrawerHeader(child: Text("data")),
             ListTile(
-              title: Text("profile"),
-              onTap: (){},
+              title: const Text("profile"),
+              onTap: () {},
             )
           ],
         ),
-        ),
-      backgroundColor: brownDark, //adalaalacadka
+      ),
       appBar: buildCustomAppBar("Home page", textColor: Colors.white),
-      body: Padding(
-        padding: EdgeInsets.only(top: 10.sp),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CarouselSlider(
-              items: items.map((path) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(15.r),
-                  child: Image.asset(
-                    path,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                );
-              }).toList(),
-              options: CarouselOptions(
-                height: 150.h,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                viewportFraction: 0.95.sp,
-              ),
-            ),
-            SizedBox(height: 18.h),
-            Padding(
-              padding: EdgeInsets.only(left: 15.sp),
-              child: Text(
-                "FEATURED PRODUCTS",
-                style: TextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  letterSpacing: 1.5.sp,
+      body: GradientBackground( // ✅ هنا الخلفية
+        child: Padding(
+          padding: EdgeInsets.only(top: 10.sp),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CarouselSlider(
+                items: items.map((path) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(15.r),
+                    child: Image.asset(
+                      path,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  );
+                }).toList(),
+                options: CarouselOptions(
+                  height: 150.h,
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  viewportFraction: 0.95.sp,
                 ),
               ),
-            ),
-            SizedBox(height: 8.h),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  buildProductCard(
-                    "franch bread",
-                    "assets/images/item4.png",
-                    "\$12",
-                    "4.8",
+              SizedBox(height: 18.h),
+              Padding(
+                padding: EdgeInsets.only(left: 15.sp),
+                child: Text(
+                  "FEATURED PRODUCTS",
+                  style: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: 1.5.sp,
                   ),
-                  buildProductCard(
-                    "white bread",
-                    "assets/images/item5.jpg",
-                    "\$8",
-                    "4.5",
-                  ),
-                  buildProductCard(
-                    "Rols",
-                    "assets/images/item6.png",
-                    "\$15",
-                    "4.2",
-                  ),
-                  buildProductCard(
-                    "swiss roll",
-                    "assets/images/item7.png",
-                    "\$16",
-                    "4.9",
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Padding(
-              padding: EdgeInsets.only(left: 16.sp),
-              child: Text(
-                "categories",
-                style: TextStyle(
-                  fontSize: 25.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  letterSpacing: 1.3.sp,
                 ),
               ),
-            ),
-            SizedBox(height: 10.h),
-            Padding(
-              padding: EdgeInsets.only(left: 12.sp),
-              child: Wrap(
-                spacing: 20,
-                runSpacing: 10,
-                children: [
-                  buildCategory(Icons.bakery_dining_rounded, "BREADS"),
-                  buildCategory(Icons.shopping_bag_rounded, "SHOPPING"),
-                  buildCategory(Icons.backpack_rounded, "ORDERS"),
-                  buildCategory(Icons.backup_table_rounded, "BACKUP"),
-                  buildCategory(Icons.phone_android_outlined, "CONTACT US"),
-                ],
+              SizedBox(height: 8.h),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    buildProductCard(
+                      "franch bread",
+                      "assets/images/item4.png",
+                      "\$12",
+                      "4.8",
+                    ),
+                    buildProductCard(
+                      "white bread",
+                      "assets/images/item5.jpg",
+                      "\$8",
+                      "4.5",
+                    ),
+                    buildProductCard(
+                      "Rols",
+                      "assets/images/item6.png",
+                      "\$15",
+                      "4.2",
+                    ),
+                    buildProductCard(
+                      "swiss roll",
+                      "assets/images/item7.png",
+                      "\$16",
+                      "4.9",
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 20.h),
+              Padding(
+                padding: EdgeInsets.only(left: 16.sp),
+                child: Text(
+                  "categories",
+                  style: TextStyle(
+                    fontSize: 25.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: 1.3.sp,
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.h),
+              Padding(
+                padding: EdgeInsets.only(left: 12.sp),
+                child: Wrap(
+                  spacing: 20,
+                  runSpacing: 10,
+                  children: [
+                    buildCategory(Icons.bakery_dining_rounded, "BREADS"),
+                    buildCategory(Icons.shopping_bag_rounded, "SHOPPING"),
+                    buildCategory(Icons.backpack_rounded, "ORDERS"),
+                    buildCategory(Icons.backup_table_rounded, "BACKUP"),
+                    buildCategory(Icons.phone_android_outlined, "CONTACT US"),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

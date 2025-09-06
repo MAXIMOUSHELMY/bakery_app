@@ -26,6 +26,8 @@ PreferredSizeWidget buildCustomAppBar(
   );
 }
 const Color brownDark = Color(0xFF2B1B17);
+const Color brownLight = Color(0xFFD7A86E);
+
 
 // شكل كارت المنتجات في الهوم اسكرين
   Widget buildProductCard(
@@ -128,4 +130,22 @@ class PagePlaceholder extends StatelessWidget {
 }
 
 
+class GradientBackground extends StatelessWidget {
+  final Widget child;
+  const GradientBackground({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [brownDark, brownLight],
+        ),
+      ),
+      child: child,
+    );
+  }
+}
 

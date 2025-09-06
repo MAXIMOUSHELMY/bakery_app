@@ -12,12 +12,12 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   bool isLoading = true;
-  
+
   @override
   void initState() {
     super.initState();
     _initializeCart();
-    
+
     // الاستماع لتغييرات السلة
     CartManager.cartNotifier.addListener(_onCartChanged);
   }
@@ -61,9 +61,9 @@ class _CartPageState extends State<CartPage> {
       (item) => item['id'] == productId,
       orElse: () => {'productName': 'Product'},
     );
-    
+
     bool success = await CartManager.removeFromCart(productId);
-    
+
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -97,15 +97,12 @@ class _CartPageState extends State<CartPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                "Cancel",
-                style: TextStyle(color: Colors.grey),
-              ),
+              child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
               onPressed: () async {
                 Navigator.pop(context);
-                
+
                 bool success = await CartManager.clearCart();
                 if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -126,7 +123,10 @@ class _CartPageState extends State<CartPage> {
               ),
               child: const Text(
                 "Clear",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -179,28 +179,20 @@ class _CartPageState extends State<CartPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                "Cancel",
-                style: TextStyle(color: Colors.grey),
-              ),
+              child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
             ),
             ElevatedButton(
               onPressed: () async {
                 Navigator.pop(context);
-                
+
                 // إنشاء الطلب
                 bool success = await CartManager.createOrder();
-                
+
                 if (success) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Order placed successfully! Check Orders page.'),
-                      backgroundColor: Colors.green,
-                      duration: Duration(seconds: 3),
-                    ),
-                  );
+                  // مجرد print للتأكد، مش هنظهر SnackBar
+                  print('Order created successfully');
                 } else {
-                  _showErrorMessage("Failed to place order");
+                  print('Failed to place order');
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -222,10 +214,7 @@ class _CartPageState extends State<CartPage> {
 
   void _showErrorMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
     );
   }
 
@@ -290,10 +279,7 @@ class _CartPageState extends State<CartPage> {
           SizedBox(height: 12.h),
           Text(
             'Add some products from the menu',
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: Colors.grey.shade500,
-            ),
+            style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade500),
           ),
           SizedBox(height: 32.h),
           ElevatedButton.icon(
@@ -304,19 +290,13 @@ class _CartPageState extends State<CartPage> {
             style: ElevatedButton.styleFrom(
               backgroundColor: brownDark,
               foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(
-                horizontal: 32.w,
-                vertical: 16.h,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),
             ),
             icon: const Icon(Icons.shopping_bag),
-            label: Text(
-              'Browse Products',
-              style: TextStyle(fontSize: 16.sp),
-            ),
+            label: Text('Browse Products', style: TextStyle(fontSize: 16.sp)),
           ),
         ],
       ),
@@ -418,7 +398,7 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           SizedBox(width: 16.w),
-          
+
           // تفاصيل المنتج
           Expanded(
             child: Column(
@@ -442,7 +422,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
                 SizedBox(height: 12.h),
-                
+
                 // أزرار الكمية
                 Row(
                   children: [
@@ -510,7 +490,7 @@ class _CartPageState extends State<CartPage> {
               ],
             ),
           ),
-          
+
           // زر الحذف
           GestureDetector(
             onTap: () => _removeFromCart(item['id']),
@@ -520,11 +500,7 @@ class _CartPageState extends State<CartPage> {
                 color: Colors.red.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: Icon(
-                Icons.delete_outline,
-                color: Colors.red,
-                size: 24.sp,
-              ),
+              child: Icon(Icons.delete_outline, color: Colors.red, size: 24.sp),
             ),
           ),
         ],
@@ -558,17 +534,11 @@ class _CartPageState extends State<CartPage> {
             children: [
               Text(
                 'Subtotal:',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.grey.shade600,
-                ),
+                style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade600),
               ),
               Text(
                 '\$${CartManager.totalAmount.toStringAsFixed(2)}',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -578,10 +548,7 @@ class _CartPageState extends State<CartPage> {
             children: [
               Text(
                 'Delivery:',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.grey.shade600,
-                ),
+                style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade600),
               ),
               Text(
                 'Free',
@@ -593,11 +560,7 @@ class _CartPageState extends State<CartPage> {
               ),
             ],
           ),
-          Divider(
-            height: 20.h,
-            thickness: 1,
-            color: Colors.grey.shade300,
-          ),
+          Divider(height: 20.h, thickness: 1, color: Colors.grey.shade300),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -620,7 +583,7 @@ class _CartPageState extends State<CartPage> {
             ],
           ),
           SizedBox(height: 20.h),
-          
+
           // زر الدفع
           SizedBox(
             width: double.infinity,
