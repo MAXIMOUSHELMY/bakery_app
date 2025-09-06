@@ -57,7 +57,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // دالة لعرض المحتوى حسب الـ tab المختار
   Widget _buildContentForIndex(int index) {
     switch (index) {
       case 0:

@@ -284,8 +284,6 @@ class _CartPageState extends State<CartPage> {
           SizedBox(height: 32.h),
           ElevatedButton.icon(
             onPressed: () {
-              // العودة لصفحة المنتجات
-              // يمكنك استخدام Navigator أو تغيير الـ tab في HomePage
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: brownDark,
@@ -306,7 +304,7 @@ class _CartPageState extends State<CartPage> {
   Widget _buildCartContent() {
     return Column(
       children: [
-        // عرض عدد المنتجات والمجموع السريع
+        
         Container(
           width: double.infinity,
           padding: EdgeInsets.all(16.sp),
@@ -340,7 +338,6 @@ class _CartPageState extends State<CartPage> {
           ),
         ),
 
-        // قائمة المنتجات
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.all(16.sp),
@@ -351,7 +348,7 @@ class _CartPageState extends State<CartPage> {
           ),
         ),
 
-        // قسم الدفع السفلي
+       
         _buildBottomSection(),
       ],
     );
@@ -375,7 +372,7 @@ class _CartPageState extends State<CartPage> {
       ),
       child: Row(
         children: [
-          // صورة المنتج
+       
           ClipRRect(
             borderRadius: BorderRadius.circular(12.r),
             child: Image.asset(
@@ -399,7 +396,7 @@ class _CartPageState extends State<CartPage> {
           ),
           SizedBox(width: 16.w),
 
-          // تفاصيل المنتج
+         
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -423,7 +420,7 @@ class _CartPageState extends State<CartPage> {
                 ),
                 SizedBox(height: 12.h),
 
-                // أزرار الكمية
+             
                 Row(
                   children: [
                     GestureDetector(
@@ -491,7 +488,7 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
 
-          // زر الحذف
+         
           GestureDetector(
             onTap: () => _removeFromCart(item['id']),
             child: Container(
@@ -528,7 +525,7 @@ class _CartPageState extends State<CartPage> {
       ),
       child: Column(
         children: [
-          // تفاصيل الدفع
+    
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -584,7 +581,7 @@ class _CartPageState extends State<CartPage> {
           ),
           SizedBox(height: 20.h),
 
-          // زر الدفع
+         
           SizedBox(
             width: double.infinity,
             height: 56.h,

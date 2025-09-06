@@ -246,7 +246,7 @@ class _ProductsPageState extends State<ProductsPage> {
       body: GradientBackground(   
         child: Column(
           children: [
-            // Search Bar Container
+ 
             Container(
               padding: EdgeInsets.all(16.sp),
               decoration: BoxDecoration(
@@ -258,7 +258,7 @@ class _ProductsPageState extends State<ProductsPage> {
               ),
               child: Column(
                 children: [
-                  // Search Bar
+                 
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -312,7 +312,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     ),
                   ),
 
-                  // Search Results Counter
+                  
                   if (_searchQuery.isNotEmpty) ...[
                     SizedBox(height: 12.h),
                     Row(
@@ -338,7 +338,7 @@ class _ProductsPageState extends State<ProductsPage> {
               ),
             ),
 
-            // Products Grid
+   
             Expanded(
               child: _filteredProducts.isEmpty && _searchQuery.isNotEmpty
                   ? _buildNoResultsWidget()
@@ -443,7 +443,7 @@ class _ProductsPageState extends State<ProductsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // صورة المنتج
+       
           Expanded(
             flex: 3,
             child: Stack(
@@ -470,7 +470,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     },
                   ),
                 ),
-                // عرض الفئة
+           
                 Positioned(
                   top: 6.h,
                   left: 6.w,
@@ -493,7 +493,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     ),
                   ),
                 ),
-                // قلب المفضلة
+              
                 Positioned(
                   top: 6.h,
                   right: 6.w,
@@ -520,7 +520,7 @@ class _ProductsPageState extends State<ProductsPage> {
                     ),
                   ),
                 ),
-                // عرض الكمية في السلة إذا وجدت
+               
                 if (isInCart)
                   Positioned(
                     bottom: 6.h,
@@ -545,7 +545,7 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           ),
 
-          // معلومات المنتج
+          
           Expanded(
             flex: 2,
             child: Padding(
@@ -553,7 +553,7 @@ class _ProductsPageState extends State<ProductsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // اسم المنتج
+                
                   Text(
                     product['name'],
                     style: TextStyle(
@@ -566,7 +566,7 @@ class _ProductsPageState extends State<ProductsPage> {
                   ),
                   SizedBox(height: 3.h),
 
-                  // السعر والتقييم
+                  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -596,7 +596,7 @@ class _ProductsPageState extends State<ProductsPage> {
                   ),
                   SizedBox(height: 6.h),
 
-                  // زر الشراء
+                 
                   SizedBox(
                     width: double.infinity,
                     height: 32.h,

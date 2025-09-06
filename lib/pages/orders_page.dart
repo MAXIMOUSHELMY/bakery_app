@@ -39,11 +39,11 @@ class OrdersPageState extends State<OrdersPage> {
         return;
       }
 
-      // قراءة الطلبات من Firebase
+      
       QuerySnapshot orderSnapshot = await _firestore
           .collection('orders')
           .where('userId', isEqualTo: user.uid)
-         // .orderBy('orderDate', descending: true) // أحدث طلب أولاً
+         
           .get();
 
       List<Map<String, dynamic>> fetchedOrders = [];
@@ -51,12 +51,12 @@ class OrdersPageState extends State<OrdersPage> {
       for (var doc in orderSnapshot.docs) {
         Map<String, dynamic> orderData = doc.data() as Map<String, dynamic>;
         
-        // تحويل Timestamp إلى DateTime
+     
         if (orderData['orderDate'] is Timestamp) {
           orderData['orderDate'] = (orderData['orderDate'] as Timestamp).toDate();
         }
         if (orderData['estimatedDelivery'] is DateTime || orderData['estimatedDelivery'] is String) {
-          // إذا كان string، حول لـ DateTime
+          
           if (orderData['estimatedDelivery'] is String) {
             orderData['estimatedDelivery'] = DateTime.tryParse(orderData['estimatedDelivery']) ?? 
                 DateTime.now().add(const Duration(minutes: 30));
@@ -160,7 +160,7 @@ class OrdersPageState extends State<OrdersPage> {
         ),
         child: Column(
           children: [
-            // Header
+        
             Container(
               padding: EdgeInsets.all(20.sp),
               child: Column(
@@ -220,7 +220,7 @@ class OrdersPageState extends State<OrdersPage> {
               ),
             ),
             
-            // Order Items
+            
             Expanded(
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -300,7 +300,7 @@ class OrdersPageState extends State<OrdersPage> {
               ),
             ),
             
-            // Total Amount & Delivery Info
+            
             Container(
               padding: EdgeInsets.all(20.sp),
               decoration: BoxDecoration(
@@ -401,13 +401,13 @@ class OrdersPageState extends State<OrdersPage> {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  // تحديث حالة الطلب في Firebase
+         
                   await _firestore
                       .collection('orders')
                       .doc(order['orderId'])
                       .update({'status': 'cancelled'});
                   
-                  // تحديث القائمة المحلية
+                 
                   setState(() {
                     orders[index]['status'] = 'cancelled';
                   });
@@ -513,7 +513,7 @@ class OrdersPageState extends State<OrdersPage> {
           SizedBox(height: 32.h),
           ElevatedButton.icon(
             onPressed: () {
-              // يمكنك إضافة navigation لصفحة المنتجات
+       
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: brownDark,
@@ -574,7 +574,7 @@ class OrdersPageState extends State<OrdersPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with status and order number
+        
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -637,7 +637,7 @@ class OrdersPageState extends State<OrdersPage> {
           
           SizedBox(height: 12.h),
           
-          // Items count and total
+      
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -661,7 +661,7 @@ class OrdersPageState extends State<OrdersPage> {
           
           SizedBox(height: 12.h),
           
-          // Estimated delivery
+        
           Row(
             children: [
               Icon(
@@ -682,7 +682,7 @@ class OrdersPageState extends State<OrdersPage> {
           
           SizedBox(height: 16.h),
           
-          // Action buttons
+         
           Row(
             children: [
               Expanded(
